@@ -1,3 +1,3 @@
-FROM httpd:2.4
+FROM nginx
 EXPOSE 8000
-COPY . /usr/local/apache2/htdocs/
+COPY .  /usr/share/nginx/html
