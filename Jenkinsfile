@@ -9,7 +9,7 @@ pipeline {
             steps {
                 script {
                     // Use withCredentials to bind the GitHub token to the GITHUB_SECRET variable
-                    withCredentials([string(credentialsId: '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', variable: 'GITHUB_SECRET')]) {
+                    withCredentials([string(credentialsId: 'GITHUB_SECRET', variable: 'GITHUB_SECRET')]) {
                         git url: 'https://github.com/yoursmanjunad/MyPortfolio.git', credentialsId: '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', branches: [[name: 'main']]
                     }
                 }
