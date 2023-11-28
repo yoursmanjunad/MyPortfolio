@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         IMAGE_TAG = "1.1.1"
+        GITHUB_SECRET = credentials('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')
     }
 
     stages {
