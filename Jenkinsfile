@@ -11,7 +11,9 @@ pipeline {
                 script {
                     git credentialsId: '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',
                     url: 'https://github.com/yoursmanjunad/MyPortfolio.git',
-                    branches: [[name: 'main']]
+                    branches: [[name: 'main']],
+                    // Use the GitHub token for authentication
+                    credentials: GITHUB_SECRET
                 }
             }
         }
