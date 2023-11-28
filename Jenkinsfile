@@ -2,14 +2,14 @@ pipeline {
     agent any
     environment {
         IMAGE_TAG = "1.1.1"
-        GITHUB_SECRET = credentials('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')
+        GITHUB_SECRET = credentials('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')
     }
 
     stages {
         stage('Checkout') {
             steps {
                 script {
-                    git credentialsId: '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',
+                    git credentialsId: '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',
                     url: 'https://github.com/yoursmanjunad/MyPortfolio.git',
                     branches: [[name: 'main']],
                     // Use the GitHub token for authentication
