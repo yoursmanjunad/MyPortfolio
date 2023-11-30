@@ -21,7 +21,9 @@ pipeline {
             steps {
                 script {
                     echo 'Pushing Docker Image'
-                    sh "docker push manju2033/manju05" 
+                    sh "docker login -u manju2033 Manjunath_2003@"
+                    sh "docker push manju2033/manju05"
+                    sh "docker logout"
                 }
             }
         }
