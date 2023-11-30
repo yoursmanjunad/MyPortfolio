@@ -1,8 +1,5 @@
 pipeline {
     agent any
-    environment {
-        IMAGE_TAG = "1.1.1"
-    }
 
     stages {
         stage('Checkout') {
@@ -15,18 +12,18 @@ pipeline {
             steps {
                 script {
                     echo 'Building Docker Image'
-                    sh "docker build -t manju2033/manju05:${IMAGE_TAG} ."
+                    sh "docker build -t manju2033/manju05 ."
                 }
             }
         }
 
-        // stage('Push Image') {
-        //     steps {
-        //         script {
-        //             echo 'Pushing Docker Image'
-        //             sh "docker push manju2033/manju05:${IMAGE_TAG}"
-        //         }
-        //     }
-        // }
+        stage('Push Image') {
+            steps {
+                script {
+                    echo 'Pushing Docker Image'
+                    sh "docker push manju2033/manju05" 
+                }
+            }
+        }
     }
 }
