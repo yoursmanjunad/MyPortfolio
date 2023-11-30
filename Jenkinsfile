@@ -15,18 +15,18 @@ pipeline {
             steps {
                 script {
                     echo 'Building Docker Image'
-                    sh "sudo docker build -t manju2033/manju05:${IMAGE_TAG} ."
+                    sh "docker build -t manju2033/manju05:${IMAGE_TAG} ."
                 }
             }
         }
 
-        stage('Push Image') {
-            steps {
-                script {
-                    echo 'Pushing Docker Image'
-                    sh "sudo docker push manju2033/manju05:${IMAGE_TAG}"
-                }
-            }
-        }
+        // stage('Push Image') {
+        //     steps {
+        //         script {
+        //             echo 'Pushing Docker Image'
+        //             sh "docker push manju2033/manju05:${IMAGE_TAG}"
+        //         }
+        //     }
+        // }
     }
 }
