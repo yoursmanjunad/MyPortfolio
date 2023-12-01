@@ -15,12 +15,12 @@ pipeline {
         }
         stage('Checkout') {
             steps {
-                checkout scm
+                git branch: 'main', url: 'https://github.com/yoursmanjunad/MyPortfolio.git'
                 }
             }
         stage("Sonarqube Analysis") {
             steps {
-                withSonarQubeEnv('sonar-server') {
+                withSonarQubeEnv('Sonar-Scanner') {
                     sh '''$SCANNER_HOME/bin/Sonar-Scanner -Dsonar.projectName=portfolio \
                     -Dsonar.projectKey=portfolio'''
                 }
