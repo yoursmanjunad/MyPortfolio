@@ -1,5 +1,9 @@
 pipeline {
     agent any
+    tools {
+        jdk 'jdk17'
+        nodejs 'node16'
+    }
     environment {
         SCANNER_HOME = tool 'Sonar-Scanner'
     }
@@ -17,9 +21,21 @@ pipeline {
         stage("Sonarqube Analysis") {
             steps {
                 withSonarQubeEnv('sonar-server') {
-                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=portfolio \
+                    sh '''$SCANNER_HOME/bin/Sonar-Scanner -Dsonar.projectName=portfolio \
                     -Dsonar.projectKey=portfolio'''
                 }
+            }
+        }
+        stage("quality gate") {
+            steps {
+                script {
+                    waitForQualityGate abortPipeline: false, credentialsId: 'Sonar-Qube'
+                }
+            }
+        }
+        stage('Install Dependencies') {
+            steps {
+                sh "npm install"
             }
         }
         stage('Build Docker') {
