@@ -18,10 +18,12 @@ jobs:
       with:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-    - name: Debug SSH Connection
+    - name: Test SSH Connectivity
       run: |
         nc -zv 10.6.0.84 22 || echo "Port 22 is not open"
 
     - name: Deploy to server
       run: |
         ssh -o StrictHostKeyChecking=no ubuntu@10.6.0.84 'bash -s' < deploy.sh
+      env:
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
