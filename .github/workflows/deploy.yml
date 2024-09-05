@@ -19,15 +19,36 @@ jobs:
         ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
     - name: Add server to known hosts
-      run: ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+      run: |
+        echo "Adding server to known hosts..."
+        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+        echo "Server added to known hosts."
 
     - name: Test SSH Connectivity
       run: |
-        if ! nc -zv ${{ secrets.SERVER_IP }} 22; then
+        echo "Testing SSH connectivity..."
+        if nc -zv ${{ secrets.SERVER_IP }} 22 2>&1; then
+          echo "Successfully connected to server on port 22"
+        else
           echo "Error: Cannot connect to server on port 22"
           exit 1
         fi
 
     - name: Deploy to server
       run: |
-        ssh ubuntu@${{ secrets.SERVER_IP }} 'bash -s' < deploy.sh
+        echo "Starting deployment..."
+        set -x  # Enable command echoing
+        ssh -v ubuntu@${{ secrets.SERVER_IP }} 'bash -s' < deploy.sh
+        set +x  # Disable command echoing
+      env:
+        DEPLOY_SCRIPT_PATH: ${{ github.workspace }}/deploy.sh
+
+    - name: Check deploy.sh exists
+      run: |
+        if [ -f "${{ github.workspace }}/deploy.sh" ]; then
+          echo "deploy.sh exists in the repository"
+          cat "${{ github.workspace }}/deploy.sh"
+        else
+          echo "Error: deploy.sh not found in the repository"
+          exit 1
+        fi
