@@ -16,13 +16,7 @@ jobs:
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.5.3
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-    - name: Test SSH connection
-      run: |
-        ssh -o StrictHostKeyChecking=no user@10.6.0.84 'echo "Connection successful"'
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-    
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}    
     - name: Deploy to server
       run: |
         ssh -o StrictHostKeyChecking=no ubuntu@10.6.0.84 'bash -s' < ./deploy.sh
