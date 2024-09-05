@@ -3,7 +3,8 @@ name: Deploy Application
 on:
   push:
     branches:
-      - main
+      - main  # Adjust if you want to deploy on a different branch
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -15,39 +16,9 @@ jobs:
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.5.3
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
-
-    - name: Add server to known hosts
-      run: |
-        echo "Adding server to known hosts..."
-        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
-        echo "Server added to known hosts."
-
-    - name: Test SSH Connectivity
-      run: |
-        echo "Testing SSH connectivity..."
-        if nc -zv ${{ secrets.SERVER_IP }} 22 2>&1; then
-          echo "Successfully connected to server on port 22"
-        else
-          echo "Error: Cannot connect to server on port 22"
-          exit 1
-        fi
-
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}    
     - name: Deploy to server
       run: |
-        echo "Starting deployment..."
-        set -x  # Enable command echoing
-        ssh -v ubuntu@${{ secrets.SERVER_IP }} 'bash -s' < deploy.sh
-        set +x  # Disable command echoing
+        ssh -o StrictHostKeyChecking=no ubuntu@10.6.0.84 'bash -s' < ./deploy.sh
       env:
-        DEPLOY_SCRIPT_PATH: ${{ github.workspace }}/deploy.sh
-
-    - name: Check deploy.sh exists
-      run: |
-        if [ -f "${{ github.workspace }}/deploy.sh" ]; then
-          echo "deploy.sh exists in the repository"
-          cat "${{ github.workspace }}/deploy.sh"
-        else
-          echo "Error: deploy.sh not found in the repository"
-          exit 1
-        fi
+        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
