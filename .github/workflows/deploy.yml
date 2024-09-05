@@ -3,7 +3,7 @@ name: Deploy Application
 on:
   push:
     branches:
-      - main  # Adjust if you want to deploy on a different branch
+      - main
 
 jobs:
   deploy:
@@ -16,10 +16,12 @@ jobs:
     - name: Set up SSH
       uses: webfactory/ssh-agent@v0.5.3
       with:
-        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}    
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Debug SSH Connection
+      run: |
+        nc -zv 10.6.0.84 22 || echo "Port 22 is not open"
+
     - name: Deploy to server
       run: |
-        ssh -o StrictHostKeyChecking=no ubuntu@10.6.0.84 'bash -s' < ./deploy.sh
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-
+        ssh -o StrictHostKeyChecking=no ubuntu@10.6.0.84 'bash -s' < deploy.sh
